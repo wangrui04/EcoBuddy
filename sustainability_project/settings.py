@@ -26,7 +26,8 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'REDACTED_DJANGO_SECRET_KEY'
+SECRET_KEY = os.getenv("DJANGO_SECRET_KEY", "dev-insecure-change-me")
+
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
@@ -62,8 +63,6 @@ INSTALLED_APPS = [
 
 DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
 
-#AWS_ACCESS_KEY_ID = 'REDACTED_AWS_ACCESS_KEY_ID'
-#AWS_SECRET_ACCESS_KEY = 'REDACTED_AWS_SECRET_ACCESS_KEY'
 AWS_ACCESS_KEY_ID = os.getenv("AWS_ACCESS_KEY_ID", "")
 AWS_SECRET_ACCESS_KEY = os.getenv("AWS_SECRET_ACCESS_KEY", "")
 AWS_STORAGE_BUCKET_NAME = 'ecobuddy-files'
@@ -127,19 +126,14 @@ AUTHENTICATION_BACKENDS = (
 )
 
 SOCIALACCOUNT_PROVIDERS = {
-    'google': {
-        'APP': {
-            'client_id': '1045736885087-5hfk6dkfm4i47j9mofk552laj43oiqqj.apps.googleusercontent.com',
-            'secret': 'REDACTED_GOOGLE_OAUTH_SECRET',
-            'key': ''
+    "google": {
+        "APP": {
+            "client_id": os.getenv("GOOGLE_CLIENT_ID", ""),
+            "secret": os.getenv("GOOGLE_CLIENT_SECRET", ""),
+            "key": ""
         },
-        'SCOPE': [
-            'profile',
-            'email',
-        ],
-        'AUTH_PARAMS': {
-            'access_type': 'online',
-        }
+        "SCOPE": ["profile", "email"],
+        "AUTH_PARAMS": {"access_type": "online"},
     }
 }
 
