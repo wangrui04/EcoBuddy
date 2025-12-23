@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Posts - EcoBuddy</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background-color: #fff7e6;
+            margin: 0;
+            padding: 0;
+            color: #222;
+        }
+
+        .header {
+            background: #2c5f2d;
+            padding: 15px 0;
+        }
+
+        .header-content {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            color: #fff;
+            font-size: 24px;
+            font-weight: 700;
+            text-decoration: none;
+        }
+
+        .logout-btn {
+            background: #f44336;
+            color: #fff;
+            padding: 8px 16px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-size: 14px;
+        }
+
+        .logout-btn:hover {
+            background: #d32f2f;
+        }
+
+        .nav-bar {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 15px 20px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .nav-btn {
+            background: #4caf50;
+            color: #fff;
+            padding: 10px 16px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-size: 14px;
+        }
+
+        .nav-btn:hover {
+            background: #45a049;
+        }
+
+        .nav-btn.secondary {
+            background: #fff;
+            color: #2c5f2d;
+            border: 2px solid #2c5f2d;
+        }
+
+        .nav-btn.secondary:hover {
+            background: #e8f5e9;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 30px auto;
+            padding: 0 20px;
+        }
+
+        .page-title {
+            color: #2c5f2d;
+            font-size: 28px;
+            margin-bottom: 20px;
+        }
+
+        .post {
+            background: #fff;
+            padding: 20px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        }
+
+        .post-meta {
+            margin-bottom: 10px;
+        }
+
+        .topic-badge {
+            background: #e8f5e9;
+            color: #2c5f2d;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 12px;
+        }
+
+        .privacy-badge {
+            font-size: 12px;
+            margin-left: 10px;
+        }
+
+        .privacy-badge.public { color: #4caf50; }
+        .privacy-badge.private { color: #ff6b6b; }
+
+        .draft-badge {
+            background: #fff3cd;
+            color: #856404;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 12px;
+            margin-left: 10px;
+        }
+
+        .post h3 {
+            margin: 10px 0;
+            color: #333;
+        }
+
+        .post p {
+            color: #555;
+            line-height: 1.6;
+        }
+
+        .post img {
+            max-width: 100%;
+            border-radius: 8px;
+            margin: 10px 0;
+        }
+
+        .hashtag {
+            color: #4caf50;
+            margin-right: 8px;
+        }
+
+        .post-date {
+            font-size: 14px;
+            color: #888;
+            margin-top: 10px;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 40px;
+            background: #fff;
+            border-radius: 12px;
+        }
+
+        .btn-primary {
+            background: #4caf50;
+            color: #fff;
+            padding: 12px 24px;
+            border-radius: 8px;
+            text-decoration: none;
+            display: inline-block;
+            margin-top: 15px;
+        }
+
+        .btn-primary:hover {
+            background: #45a049;
+        }
+        .edit-btn {
+            display: inline-block;
+            margin-top: 10px;
+            font-size: 14px;
+            padding: 6px 12px;
+            border-radius: 6px;
+            background: #2c5f2d;
+            color: #fff;
+            text-decoration: none;
+        }
+
+        .edit-btn:hover {
+            background: #244d25;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="header-content">
+            <a href="{% url 'home' %}" class="logo">🌍 EcoBuddy</a>
+            <div style="display: flex; align-items: center; gap: 15px;">
+                <a href="{% url 'notifications' %}" style="position: relative; color: #fff; text-decoration: none; font-size: 24px;">
+                    🔔
+                    {% if unread_notifications_count > 0 %}
+                    <span style="position: absolute; top: -5px; right: -8px; background: #f44336; color: white; font-size: 11px; font-weight: bold; padding: 2px 6px; border-radius: 10px; min-width: 16px; text-align: center;">{{ unread_notifications_count }}</span>
+                    {% endif %}
+                </a>
+                <a href="{% url 'account_logout' %}" class="logout-btn">Logout</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="nav-bar">
+        <a href="{% url 'home' %}" class="nav-btn secondary">🏠 Home</a>
+        <a href="{% url 'public_feed' %}" class="nav-btn">📰 Feed</a>
+        <a href="{% url 'create_post' %}" class="nav-btn">➕ Create Post</a>
+        <a href="{% url 'drafts_page' %}" class="nav-btn secondary">📋 Drafts</a>
+        <a href="{% url 'friends_list' %}" class="nav-btn secondary">👥 Friends</a>
+    </div>
+
+    <div class="container">
+        <h1 class="page-title">📝 My Posts</h1>
+
+        {% if posts %}
+            {% for p in posts %}
+                <div class="post" id="post-{{ p.id }}">
+                    <div class="post-meta">
+                        <span class="topic-badge">
+                            {% for choice in p.TOPIC_CHOICES %}
+                                {% if choice.0 == p.topic %}{{ choice.1 }}{% endif %}
+                            {% endfor %}
+                        </span>
+                        {% if p.privacy == 'private' %}
+                        <span class="privacy-badge private">🔒 Friends Only</span>
+                        {% else %}
+                        <span class="privacy-badge public">🌍 Public</span>
+                        {% endif %}
+                        {% if p.is_draft %}
+                        <span class="draft-badge">📝 DRAFT</span>
+                        {% endif %}
+                    </div>
+                    <h3>{{ p.title }}</h3>
+                    <p>{{ p.content }}</p>
+                    {% if p.photo %}
+                        <img src="{{ p.photo.url }}" alt="Post photo">
+                    {% endif %}
+                    {% if p.hashtags %}
+                    <div>
+                        {% for hashtag in p.get_hashtags_display %}
+                        <span class="hashtag">{{ hashtag }}</span>
+                        {% endfor %}
+                    </div>
+                    {% endif %}
+
+                    <div style="margin-top:8px; font-size:14px; color:#888;">
+                        {{ p.likes.count }} likes
+                    </div>
+                    
+                    <div class="post-date">Posted {{ p.created_at|date:"M j, Y, g:i a" }}</div>
+                    <a href="{% url 'edit_post' p.id %}" class="edit-btn">✏️ Edit</a>
+                    <a href="{% url 'delete_post' p.id %}" class="nav-btn" style="background:#f44336;">🗑 Delete</a>
+                </div>
+                
+            {% endfor %}
+        {% else %}
+            <div class="empty-state">
+                <p>You haven't posted anything yet.</p>
+                <a href="{% url 'create_post' %}" class="btn-primary">➕ Create Your First Post</a>
+            </div>
+        {% endif %}
+    </div>
+</body>
+</html>
